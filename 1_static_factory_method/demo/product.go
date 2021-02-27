@@ -1,4 +1,4 @@
-package demo4_1
+package demo
 
 // 实现一个抽象的产品
 type Product interface {

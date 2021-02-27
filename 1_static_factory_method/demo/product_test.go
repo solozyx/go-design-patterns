@@ -1,4 +1,4 @@
-package demo4_1
+package demo
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ func TestProduct_Create(t *testing.T) {
 
 	p2 := &product2{}
 	p2.SetName("产品2")
-	fmt.Println(p.GetName())
+	fmt.Println(p2.GetName())
 }
 
 func TestProductFactory_Create(t *testing.T) {
