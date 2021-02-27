@@ -17,26 +17,32 @@ import (
 // 记录请求的URL和方法
 func tracing(next http.HandlerFunc) http.HandlerFunc {
 	return func(resp http.ResponseWriter, req *http.Request) {
+		log.Println("tracing start")
 		log.Printf("实现HTTP中间件记录请求的URL和方法：%s, %s", req.URL, req.Method)
 		next.ServeHTTP(resp, req)
+		log.Println("tracing end")
 	}
 }
 
 // 记录请求的网络地址
 func logging(next http.HandlerFunc) http.HandlerFunc {
 	return func(resp http.ResponseWriter, req *http.Request) {
+		log.Println("logging start")
 		log.Printf("实现HTTP中间件记录请求的网络地址：%s", req.RemoteAddr)
 		next.ServeHTTP(resp, req)
+		log.Println("logging end")
 	}
 }
 
 // 记录请求的耗时
-func processing(next http.HandlerFunc) http.HandlerFunc {
+func timing(next http.HandlerFunc) http.HandlerFunc {
 	return func(resp http.ResponseWriter, req *http.Request) {
+		log.Println("timing start")
 		start := time.Now()
 		next.ServeHTTP(resp, req)
 		duration := time.Since(start)
 		log.Printf("实现HTTP中间件记录请求的耗时: %v", duration)
+		log.Println("timing end")
 	}
 }
 
@@ -45,7 +51,7 @@ func HelloHandler(resp http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", tracing(logging(processing(HelloHandler))))
+	http.HandleFunc("/", tracing(logging(timing(HelloHandler))))
 	log.Printf("starting http server at: %s", "http://127.0.0.1:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
